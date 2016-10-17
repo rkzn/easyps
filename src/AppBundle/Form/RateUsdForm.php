@@ -77,7 +77,7 @@ class RateUsdForm extends AbstractType implements ContainerAwareInterface
                 'label' => 'Добавить курс',
                 'attr' => [
                     'class' => 'btn btn-primary',
-                    'ng-click' => 'addRate(rate)'
+                    'ng-click' => 'addRate(rate_usd_form)'
                 ],
             ]
         );

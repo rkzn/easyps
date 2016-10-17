@@ -37,10 +37,6 @@ class RegistrationForm extends AbstractType implements ContainerAwareInterface
                 TextType::class,
                 [
                     'label' => 'Имя',
-                    'label_attr' => [
-                        'for' => 'UserName',
-                        'tip_type' => 'username',
-                    ],
                     'attr' => [
                         'class' => '',
                         'autocomplete' => 'off',
@@ -109,7 +105,7 @@ class RegistrationForm extends AbstractType implements ContainerAwareInterface
                 'label' => 'Открыть кошелек',
                 'attr' => [
                     'class' => 'btn btn-primary',
-                    'ng-click' => 'registerClient(client)'
+                    'ng-click' => 'registerClient(registration_form)'
                 ],
             ]
         );
@@ -137,7 +133,7 @@ class RegistrationForm extends AbstractType implements ContainerAwareInterface
                 'attr' => [
                     'class' => 'form',
                     'novalidate' => '',
-                    'ng-submit' => ''
+                    'role' => 'form',
                 ],
                 'currency' => null,
             ]

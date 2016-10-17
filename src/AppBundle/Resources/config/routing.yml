@@ -1,3 +1,11 @@
 app_home_page:
     path:  /
     defaults: { _controller: 'AppBundle:Default:index' }
+    options:
+        expose: true
+rest :
+    type : rest
+    resource : "@AppBundle/Resources/config/routing_rest.yml"
+    prefix : /api
+    options:
+        expose: true

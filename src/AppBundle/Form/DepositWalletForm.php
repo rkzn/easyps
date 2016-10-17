@@ -65,7 +65,7 @@ class DepositWalletForm extends AbstractType implements ContainerAwareInterface
                 'label' => 'Пополнить кошелек',
                 'attr' => [
                     'class' => 'btn btn-primary',
-                    'ng-click' => 'depositWallet(deposit)'
+                    'ng-click' => 'depositWallet(deposit_wallet_form)'
                 ],
             ]
         );

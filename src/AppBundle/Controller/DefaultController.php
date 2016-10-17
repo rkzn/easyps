@@ -25,4 +25,12 @@ class DefaultController extends Controller
             'transferForm' => $transferForm->createView(),
         ]);
     }
+
+    /**
+     * @param Request $request
+     */
+    public function reportAction(Request $request)
+    {
+
+    }
 }

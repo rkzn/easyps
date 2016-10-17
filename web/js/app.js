@@ -1,10 +1,31 @@
 (function () {
-    angular.module('EasyPS', []).controller('DefaultController', ['$scope', '$http', function ($scope, $http) {
+    angular.module('EasyPS', []).controller('DefaultController', ['$scope', '$http', function ($scope, $http)
+    {
         $scope.registerClient = function(form) {
-            console.log('registerClient', form);
+            if (form.$valid) {
+                var req = {
+                    method: 'POST',
+                    url: Routing.generate('api_post_user'),
+                    params: {
+                        username: form['registration_form[username]']['$modelValue'],
+                        country: form['registration_form[country]']['$modelValue'],
+                        city: form['registration_form[city]']['$modelValue'],
+                        currency: form['registration_form[currency]']['$modelValue']
+                    }
+                };
 
-            if (form.username && form.country) {
-                $scope.login();
+                $http(req).success(function (data) {
+
+                    console.log('registerClient', data);
+
+                    if (data.success) {
+                    // OK
+                    } else {
+                    // error
+                    }
+                 });
+            } else {
+                console.log('registerClient errors', form.$error);
             }
         };
 
@@ -27,10 +48,10 @@
         $scope.depositWallet = function (form) {
             var req = {
                 method: 'POST',
-                //url: Routing.generate('api_deposit_wallet'),
-                params: { 'amount': $scope.amount }
+                url: Routing.generate('api_post_deposit_wallet'),
+                params: {  }
             };
-            console.log('depositWallet', form);
+            console.log('depositWallet', req, form);
             /*$http(req).success(function (data) {
                 if (data.success) {
                     // OK
@@ -43,14 +64,11 @@
         $scope.transferMoney = function (form) {
             var req = {
                 method: 'POST',
-                //url: Routing.generate('api_transfer_money'),
+                url: Routing.generate('api_post_transfer'),
                 params: {
-                    'receiver': form.receiver,
-                    'amount': form.amount,
-                    'currency': form.currency
                 }
             };
-            console.log('transferMoney', form);
+            console.log('transferMoney', req, form);
 
             /*$http(req).success(function (data) {
                 if (data.success) {

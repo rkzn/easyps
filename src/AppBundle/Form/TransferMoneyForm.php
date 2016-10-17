@@ -84,7 +84,7 @@ class TransferMoneyForm extends AbstractType implements ContainerAwareInterface
                 'label' => 'Перевести деньги',
                 'attr' => [
                     'class' => 'btn btn-primary',
-                    'ng-click' => 'transferMoney(transfer)'
+                    'ng-click' => 'transferMoney(transfer_money_form)'
                 ],
             ]
         );
