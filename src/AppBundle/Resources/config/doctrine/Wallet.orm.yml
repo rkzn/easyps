@@ -1,0 +1,25 @@
+AppBundle\Entity\Wallet:
+    type:  entity
+    table: wallets
+    repositoryClass: AppBundle\Entity\WalletRepository
+    id:
+        id:
+            type: integer
+            generator:
+                strategy: AUTO
+    fields:
+        currency:
+            type: string
+            length: 3
+            nullable: false
+        rest:
+            type: float
+            nullable: false
+    oneToOne:
+        client:
+            targetEntity: AppBundle\Entity\Client
+            mappedBy: wallet
+            joinColumn:
+                name: clientId
+                referencedColumnName: id
+                nullable: false
