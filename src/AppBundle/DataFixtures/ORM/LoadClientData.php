@@ -2,13 +2,13 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
-use UserBundle\Entity\User;
+use AppBundle\Entity\Client;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Faker\Factory;
 
-class LoadUserData extends AbstractFixture implements OrderedFixtureInterface
+class LoadClientData extends AbstractFixture implements OrderedFixtureInterface
 {
     /**
      * {@inheritDoc}
@@ -17,7 +17,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface
     {
         $faker = Factory::create('en_US');
 
-        $admin = new User();
+        $admin = new Client();
         $admin
             ->setUsername('admin')
             ->setEmail('admin@admin.com')
@@ -33,7 +33,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface
         $manager->flush();
 
         for ($b = 0; $b < 3; $b++) {
-            $user = new User();
+            $user = new Client();
             $user
                 ->setUsername(strtolower($faker->userName))
                 ->setEmail(strtolower($faker->email))
