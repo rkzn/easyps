@@ -1,5 +1,54 @@
 {% extends 'AppBundle::layout.html.twig' %}
+{% macro curly(contents) %}
+    {{ '{{' ~ contents ~ '}}' }}
+{% endmacro %}
+{% import _self as ng %}
+
+{% form_theme registrationForm 'bootstrap_3_layout.html.twig' %}
+{% form_theme rateUsdForm 'bootstrap_3_layout.html.twig' %}
+{% form_theme depositForm 'bootstrap_3_layout.html.twig' %}
+{% form_theme transferForm 'bootstrap_3_layout.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/app.js') }}"></script>
+{% endblock %}
 
 {% block content %}
-INDEX
+    <div class="site-index" ng-controller="DefaultController as app" ng-init="">
+
+        <div class="row-fluid">
+            <div class="col-sm-6">
+                <h5 class="message">Курс валют</h5>
+                <hr>
+                {{ form(rateUsdForm) }}
+            </div>
+            <div class="col-sm-6">
+                <div ng-hide="inWallet">
+                    <h5 class="message">
+                        Форма регистрации
+                    </h5>
+                    <hr>
+                    {{ form(registrationForm) }}
+                </div>
+
+                <div ng-show="inWallet">
+                    <h5 class="message">
+                        Пополнение кошелька
+                    </h5>
+                    <hr>
+
+                    {{ form(depositForm) }}
+
+                    <h5 class="message">
+                        Перевод средств
+                    </h5>
+                    <hr>
+
+                    {{ form(transferForm) }}
+                </div>
+            </div>
+
+        </div>
+    </div>
 {% endblock %}

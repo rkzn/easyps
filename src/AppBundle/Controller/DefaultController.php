@@ -13,6 +13,16 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
-        return $this->render('AppBundle::index.html.twig');
+        $registrationForm = $this->createForm('registration_form');
+        $rateUsdForm = $this->createForm('rate_usd_form');
+        $depositForm = $this->createForm('deposit_wallet_form');
+        $transferForm = $this->createForm('transfer_money_form');
+
+        return $this->render('AppBundle::index.html.twig', [
+            'registrationForm' => $registrationForm->createView(),
+            'rateUsdForm' => $rateUsdForm->createView(),
+            'depositForm' => $depositForm->createView(),
+            'transferForm' => $transferForm->createView(),
+        ]);
     }
 }

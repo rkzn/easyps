@@ -1,0 +1,51 @@
+parameters:
+    app_client.class: AppBundle\ClientManager
+    app_client.form.registration.class: AppBundle\Form\RegistrationForm
+    app_wallet.class: AppBundle\WalletManager
+    app_wallet.form.deposit.class: AppBundle\Form\DepositWalletForm
+    app_wallet.form.transfer.class: AppBundle\Form\TransferMoneyForm
+    app_currency.class: AppBundle\CurrencyManager
+    app_currency.form.rate_usd.class: AppBundle\Form\RateUsdForm
+
+services:
+# == Managers ===
+    app_client:
+        class: '%app_client.class%'
+        arguments: [ '@doctrine.orm.entity_manager' ]
+
+    app_currency:
+        class: '%app_currency.class%'
+        arguments: [ '@doctrine.orm.entity_manager' ]
+
+    app_wallet:
+        class: '%app_client.class%'
+        arguments: [ '@doctrine.orm.entity_manager', '@app_currency' ]
+
+# === Forms ===
+    app_client.form.registration:
+        class: '%app_client.form.registration.class%'
+        calls:
+            - [ setContainer, ['@service_container']]
+        tags:
+            - { name: form.type, alias: registration_form }
+
+    app_currency.form.rate_usd:
+        class: '%app_currency.form.rate_usd.class%'
+        calls:
+            - [ setContainer, ['@service_container']]
+        tags:
+            - { name: form.type, alias: rate_usd_form }
+
+    app_wallet.form.deposit:
+        class: '%app_wallet.form.deposit.class%'
+        calls:
+            - [ setContainer, ['@service_container']]
+        tags:
+            - { name: form.type, alias: deposit_wallet_form }
+
+    app_wallet.form.transfer:
+        class: '%app_wallet.form.transfer.class%'
+        calls:
+            - [ setContainer, ['@service_container']]
+        tags:
+            - { name: form.type, alias: transfer_money_form }
