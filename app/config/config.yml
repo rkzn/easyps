@@ -3,7 +3,7 @@ imports:
     - { resource: security.yml }
     - { resource: services.yml }
     - { resource: "@ApiBundle/Resources/config/services.yml" }
-    - { resource: "@UserBundle/Resources/config/services.yml" }
+    - { resource: "@AppBundle/Resources/config/services.yml" }
 
 # Put parameters here that don't need to change on each machine where the app is deployed
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
@@ -70,7 +70,7 @@ swiftmailer:
 fos_user:
     db_driver: orm # other valid values are 'mongodb', 'couchdb' and 'propel'
     firewall_name: main
-    user_class: UserBundle\Entity\User
+    user_class: AppBundle\Entity\Client
 
 fos_rest:
     view:
@@ -84,5 +84,12 @@ fos_rest:
         failed_validation: HTTP_BAD_REQUEST
         default_engine: twig
         jsonp_handler:
-            callback_param:       false
+            callback_param: false
 
+maxmind_geoip:
+    data_file_path: "%kernel.root_dir%/../web/GeoLiteCity.dat"
+
+twig:
+    form:
+        resources: ['bootstrap_3_layout.html.twig']
+        # resources: ['bootstrap_3_horizontal_layout.html.twig']
