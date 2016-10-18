@@ -3,6 +3,7 @@
 namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\Client;
+use AppBundle\Entity\Wallet;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -17,24 +18,9 @@ class LoadClientData extends AbstractFixture implements OrderedFixtureInterface
     {
         $faker = Factory::create('en_US');
 
-        $admin = new Client();
-        $admin
-            ->setUsername('admin')
-            ->setEmail('admin@admin.com')
-
-            ->setCity($faker->city)
-            ->setCountry($faker->countryCode)
-
-            ->addRole('ROLE_ADMIN')
-            ->setPlainPassword('123456')
-            ->setEnabled(true)
-        ;
-        $manager->persist($admin);
-        $manager->flush();
-
         for ($b = 0; $b < 3; $b++) {
-            $user = new Client();
-            $user
+            $client = new Client();
+            $client
                 ->setUsername(strtolower($faker->userName))
                 ->setEmail(strtolower($faker->email))
 
@@ -45,11 +31,20 @@ class LoadClientData extends AbstractFixture implements OrderedFixtureInterface
                 ->setPlainPassword('123456')
                 ->setEnabled(true)
             ;
-            $manager->persist($user);
+            $manager->persist($client);
             $manager->flush();
-        }
 
-        $this->addReference('admin', $admin);
+            $wallet = new Wallet();
+            $wallet
+                ->setClient($client)
+                ->setCurrency($faker->currencyCode)
+                ->setRest(0);
+
+            $manager->persist($wallet);
+            $manager->flush();
+            $client->setWallet($wallet);
+
+        }
     }
 
     /**
