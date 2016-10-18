@@ -1,11 +1,11 @@
 <?php
 
 namespace AppBundle\Controller;
+
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations\RequestParam;
 use FOS\RestBundle\View\View;
 use FOS\RestBundle\Request\ParamFetcher;
-use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\VarDumper\VarDumper;
 
 class ApiRestController extends FOSRestController
@@ -28,8 +28,7 @@ class ApiRestController extends FOSRestController
      *
      * @param ParamFetcher $paramFetcher Paramfetcher
      *
-     * @RequestParam(name="currency", nullable=false, strict=true, description="Currency.")
-     * @RequestParam(name="rate", nullable=false, strict=true, description="Rate.")
+     * @RequestParam(name="provider", nullable=false, strict=true, description="Provider.")
      * @RequestParam(name="date", nullable=false, strict=true, description="Date.")
      *
      * @return View

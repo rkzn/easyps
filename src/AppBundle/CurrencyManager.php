@@ -21,5 +21,8 @@ class CurrencyManager implements ContainerAwareInterface
         return array_flip(array_intersect_key(Intl::getCurrencyBundle()->getCurrencyNames(), $walletCurrencies));
     }
 
-
+    public function getRateProviderChoices()
+    {
+        return $this->container->getParameter('app_currency.rate_providers');
+    }
 }

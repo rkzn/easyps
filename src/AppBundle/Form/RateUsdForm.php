@@ -5,9 +5,8 @@ namespace AppBundle\Form;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CurrencyType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -28,41 +27,26 @@ class RateUsdForm extends AbstractType implements ContainerAwareInterface
     {
         $builder
             ->add(
-                'currency',
-                CurrencyType::class,
+                'provider',
+                ChoiceType::class,
                 [
-                    'label' => 'Валюта',
+                    'label' => 'Провайдер',
                     'attr' => [
                         'autocomplete' => 'off',
-                        'ng-model' => 'rate.currency'
+                        'ng-model' => 'rate.provider'
                     ],
                     'constraints' => [new NotBlank()],
                     'empty_value' => '---',
-                    'choices' => $this->container->get('app_currency')->getWalletCurrencyChoices()
+                    'choices' => $this->container->get('app_currency')->getRateProviderChoices()
                 ]
             )
-            ->add(
-                'rateValue',
-                NumberType::class,
-                [
-                    'label' => 'Курс',
-                    'attr' => [
-                        'class' => '',
-                        'autocomplete' => 'off',
-                        'ng-model' => 'rate.rateValue'
-                    ],
-                    'constraints' => [
-                        new NotBlank(),
-                    ],
-                ]
-            )
-
             ->add(
                 'rateDate',
                 DateType::class,
                 [
                     'label' => 'Дата',
                     'constraints' => [new NotBlank()],
+                    'data' => new \DateTime(),
                     'attr' => [
                         'ng-model' => 'rate.rateDate'
                     ],
@@ -75,7 +59,7 @@ class RateUsdForm extends AbstractType implements ContainerAwareInterface
             'submitButton',
             SubmitType::class,
             [
-                'label' => 'Добавить курс',
+                'label' => 'Загрузить курс',
                 'attr' => [
                     'class' => 'btn btn-primary',
                     'ng-click' => 'addRate(rate_usd_form)'
