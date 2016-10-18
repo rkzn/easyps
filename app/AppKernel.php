@@ -23,6 +23,7 @@ class AppKernel extends Kernel
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
             new \RedCode\CurrencyRateBundle\RedCodeCurrencyRateBundle(),
             new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
+            new APY\DataGridBundle\APYDataGridBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'), true)) {
