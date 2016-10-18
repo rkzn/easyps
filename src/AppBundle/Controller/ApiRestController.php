@@ -6,10 +6,14 @@ use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations\RequestParam;
 use FOS\RestBundle\View\View;
 use FOS\RestBundle\Request\ParamFetcher;
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\VarDumper\VarDumper;
 
 class ApiRestController extends FOSRestController
 {
+    /**
+     * @return static
+     */
     public function getUsersAction()
     {
         $userManager = $this->container->get('fos_user.user_manager');
@@ -23,7 +27,14 @@ class ApiRestController extends FOSRestController
     }
 
     /**
-     * Add RateUsd from the submitted data.<br/>
+     * Add Rate from the submitted data.
+     *
+     * @ApiDoc(
+     *   resource = true,
+     *   statusCodes = {
+     *     200 = "Returned when successful"
+     *   }
+     * )
      *
      *
      * @param ParamFetcher $paramFetcher Paramfetcher
@@ -40,8 +51,14 @@ class ApiRestController extends FOSRestController
     }
 
     /**
-     * Transfer money from the submitted data.<br/>
+     * Transfer money from the submitted data.
      *
+     * @ApiDoc(
+     *   resource = true,
+     *   statusCodes = {
+     *     200 = "Returned when successful"
+     *   }
+     * )
      *
      * @param ParamFetcher $paramFetcher Paramfetcher
      *
@@ -58,9 +75,13 @@ class ApiRestController extends FOSRestController
     }
 
     /**
-     * Deposit wallet from the submitted data.<br/>
-     *
-     *
+     * Deposit wallet from the submitted data.
+     * @ApiDoc(
+     *   resource = true,
+     *   statusCodes = {
+     *     200 = "Returned when successful"
+     *   }
+     * )
      * @param ParamFetcher $paramFetcher Paramfetcher
      *
      * @RequestParam(name="currency", nullable=false, strict=true, description="Currency.")
@@ -77,7 +98,12 @@ class ApiRestController extends FOSRestController
 
     /**
      * Create a User from the submitted data.<br/>
-     *
+     * @ApiDoc(
+     *   resource = true,
+     *   statusCodes = {
+     *     200 = "Returned when successful"
+     *   }
+     * )
      *
      * @param ParamFetcher $paramFetcher Paramfetcher
      *

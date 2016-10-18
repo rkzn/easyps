@@ -1,0 +1,38 @@
+AppBundle\Entity\WalletHistory:
+    type: entity
+    table: wallet_history
+    repositoryClass: AppBundle\Entity\WalletHistoryRepository
+
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+
+        addDate:
+            type: datetime
+            nullable: false
+
+        restBefore:
+            type: decimal
+            precision: 10
+            scale: 5
+            nullable: false
+
+        restAfter:
+            type: decimal
+            precision: 10
+            scale: 5
+            nullable: false
+
+    manyToOne:
+        wallet:
+            targetEntity: AppBundle\Entity\Wallet
+            inversedBy: history
+            joinColumn:
+                name: walletId
+                referencedColumnName: id
+
+    lifecycleCallbacks:
+        prePersist:   [ prePersist ]

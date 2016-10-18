@@ -11,6 +11,13 @@ class ClientManager implements ContainerAwareInterface
 {
     use ContainerAwareTrait;
 
+    public function getClientByName($name)
+    {
+        $repo = $this->container->get('doctrine.orm.entity_manager')->getRepository('AppBundle:Client');
+
+        return $repo->findByUsername($name);
+    }
+
     public function createClient($username, $country, $city, $currency)
     {
         $faker = Factory::create('en_US');

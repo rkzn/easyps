@@ -1,26 +1,40 @@
 parameters:
     app_client.class: AppBundle\ClientManager
     app_client.form.registration.class: AppBundle\Form\RegistrationForm
+
     app_wallet.class: AppBundle\WalletManager
     app_wallet.form.deposit.class: AppBundle\Form\DepositWalletForm
     app_wallet.form.transfer.class: AppBundle\Form\TransferMoneyForm
+    app_wallet.event_listener.wallet_subscriber.class: AppBundle\EventListener\WalletSubscriber
+
     app_currency.class: AppBundle\CurrencyManager
     app_currency.form.rate_usd.class: AppBundle\Form\RateUsdForm
 
 services:
+
+    app_wallet.event_listener.wallet_subscriber:
+        class: '%app_wallet.event_listener.wallet_subscriber.class%'
+        calls:
+            - [ setContainer, ['@service_container'] ]
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
+
 # == Managers ===
     app_client:
         class: '%app_client.class%'
         arguments: [ '@doctrine.orm.entity_manager' ]
-
+        calls:
+            - [ setContainer, ['@service_container']]
     app_currency:
         class: '%app_currency.class%'
         arguments: [ '@doctrine.orm.entity_manager' ]
         calls:
             - [ setContainer, ['@service_container']]
     app_wallet:
-        class: '%app_client.class%'
+        class: '%app_wallet.class%'
         arguments: [ '@doctrine.orm.entity_manager', '@app_currency' ]
+        calls:
+            - [ setContainer, ['@service_container']]
 
 # === Forms ===
     app_client.form.registration:

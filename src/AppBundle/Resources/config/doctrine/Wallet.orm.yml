@@ -18,6 +18,11 @@ AppBundle\Entity\Wallet:
     oneToOne:
         client:
             targetEntity: AppBundle\Entity\Client
+            inversedBy: wallet
             joinColumn:
                 name: clientId
                 referencedColumnName: id
+    oneToMany:
+        history:
+            targetEntity: AppBundle\Entity\WalletHistory
+            mappedBy: wallet

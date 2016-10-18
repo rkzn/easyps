@@ -15,7 +15,7 @@ fos_rest:
             xml:  false
             json: true
         templating_formats:
-            html: true
+            html: false
 
     exception:
         codes:

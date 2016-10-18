@@ -22,6 +22,7 @@ class AppKernel extends Kernel
 //            new ApiBundle\ApiBundle(),
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
             new \RedCode\CurrencyRateBundle\RedCodeCurrencyRateBundle(),
+            new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'), true)) {

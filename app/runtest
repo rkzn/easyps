@@ -1,0 +1,4 @@
+#!/usr/bin/env php
+<?php
+require_once 'bootstrap.test.php';
+PHPUnit_TextUI_Command::main($argv);

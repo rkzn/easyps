@@ -108,4 +108,49 @@ class Wallet
     {
         return $this->client;
     }
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $history;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->history = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add history
+     *
+     * @param \AppBundle\Entity\WalletHistory $history
+     * @return Wallet
+     */
+    public function addHistory(\AppBundle\Entity\WalletHistory $history)
+    {
+        $this->history[] = $history;
+
+        return $this;
+    }
+
+    /**
+     * Remove history
+     *
+     * @param \AppBundle\Entity\WalletHistory $history
+     */
+    public function removeHistory(\AppBundle\Entity\WalletHistory $history)
+    {
+        $this->history->removeElement($history);
+    }
+
+    /**
+     * Get history
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getHistory()
+    {
+        return $this->history;
+    }
 }
