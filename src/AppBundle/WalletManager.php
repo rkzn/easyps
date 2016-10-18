@@ -30,6 +30,13 @@ class WalletManager implements ContainerAwareInterface
         $this->currencyManager = $currencyManager;
     }
 
+    /**
+     * @param Wallet $source
+     * @param Wallet $destination
+     * @param Amount $amount
+     * @throws WrongCurrencyException
+     * @throws \Doctrine\DBAL\ConnectionException
+     */
     public function transferMoney(Wallet $source, Wallet $destination, Amount $amount)
     {
         if (!in_array($amount->getCurrency(), [$source->getCurrency(), $destination->getCurrency()])) {

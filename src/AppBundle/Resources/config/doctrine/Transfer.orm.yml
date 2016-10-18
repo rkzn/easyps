@@ -1,0 +1,44 @@
+AppBundle\Entity\Transfer:
+    type:  entity
+    table: transfer
+    repositoryClass: AppBundle\Entity\TransferRepository
+    id:
+        id:
+            type: integer
+            generator:
+                strategy: AUTO
+    fields:
+        createdAt:
+            type: datetime
+            nullable: false
+        updatedAt:
+            type: datetime
+            nullable: false
+        currency:
+            type: string
+            length: 3
+            nullable: false
+        amount:
+            type: decimal
+            precision: 10
+            scale: 5
+            nullable: false
+        state:
+            type: string
+            length: 10
+            nullable: false
+            options:
+                default: 'pending'
+    manyToOne:
+        sourceWallet:
+            targetEntity: AppBundle\Entity\Wallet
+        destinationWallet:
+            targetEntity: AppBundle\Entity\Wallet
+
+    oneToMany:
+        history:
+            targetEntity: AppBundle\Entity\TransferHistory
+            mappedBy: transfer
+    lifecycleCallbacks:
+        prePersist:   [ prePersist ]
+        preUpdate:   [ preUpdate ]

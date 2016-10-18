@@ -1,0 +1,37 @@
+AppBundle\Entity\TransferHistory:
+    type: entity
+    table: transfer_history
+    repositoryClass: AppBundle\Entity\TransferHistoryRepository
+
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+
+        addDate:
+            type: datetime
+            nullable: false
+
+        stateBefore:
+            type: string
+            length: 10
+            nullable: false
+
+        stateAfter:
+            type: string
+            length: 10
+            nullable: false
+
+    manyToOne:
+        transfer:
+            targetEntity: AppBundle\Entity\Transfer
+            inversedBy: history
+            column: transferId
+            joinColumn:
+                name: transferId
+                referencedColumnName: id
+
+    lifecycleCallbacks:
+        prePersist:   [ prePersist ]
