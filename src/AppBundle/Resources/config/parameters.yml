@@ -1,0 +1,2 @@
+parameters:
+    app_currency.wallet_currencies: [USD, EUR, RUB]

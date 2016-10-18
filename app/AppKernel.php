@@ -21,7 +21,7 @@ class AppKernel extends Kernel
             new FOS\UserBundle\FOSUserBundle(),
 //            new ApiBundle\ApiBundle(),
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
-            new Maxmind\Bundle\GeoipBundle\MaxmindGeoipBundle(),
+            new \RedCode\CurrencyRateBundle\RedCodeCurrencyRateBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'), true)) {

@@ -16,7 +16,8 @@ services:
     app_currency:
         class: '%app_currency.class%'
         arguments: [ '@doctrine.orm.entity_manager' ]
-
+        calls:
+            - [ setContainer, ['@service_container']]
     app_wallet:
         class: '%app_client.class%'
         arguments: [ '@doctrine.orm.entity_manager', '@app_currency' ]

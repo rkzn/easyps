@@ -2,8 +2,6 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: services.yml }
-#    - { resource: "@ApiBundle/Resources/config/services.yml" }
-    - { resource: "@AppBundle/Resources/config/services.yml" }
 
     # FriendOfSymfony Bundles
     - { resource: fos/fos_rest.yml }
@@ -71,10 +69,11 @@ swiftmailer:
     password:  "%mailer_password%"
     spool:     { type: memory }
 
-maxmind_geoip:
-    data_file_path: "%kernel.root_dir%/../web/GeoLiteCity.dat"
-
 twig:
     form:
         resources: ['bootstrap_3_layout.html.twig']
         # resources: ['bootstrap_3_horizontal_layout.html.twig']
+
+redcode_currency_rate:
+    currency_rate_class: AppBundle\Entity\CurrencyRate
+    currency_class: AppBundle\Entity\Currency

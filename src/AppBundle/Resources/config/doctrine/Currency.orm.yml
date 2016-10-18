@@ -1,0 +1,8 @@
+AppBundle\Entity\Currency:
+    type:  entity
+    table: currency
+    id:
+        id:
+            type: integer
+            generator:
+                strategy: AUTO

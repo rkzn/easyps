@@ -13,13 +13,11 @@ AppBundle\Entity\Wallet:
             length: 3
             nullable: false
         rest:
-            type: float
+            type: decimal
             nullable: false
     oneToOne:
         client:
             targetEntity: AppBundle\Entity\Client
-            mappedBy: wallet
             joinColumn:
                 name: clientId
                 referencedColumnName: id
-                nullable: false

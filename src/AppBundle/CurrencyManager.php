@@ -7,11 +7,19 @@ use Symfony\Component\Intl\Intl;
 
 class CurrencyManager implements ContainerAwareInterface
 {
-    const USD = 'USD';
     use ContainerAwareTrait;
 
-    public function getList()
+    public function getAllCurrencyChoices()
     {
         return array_flip(Intl::getCurrencyBundle()->getCurrencyNames());
     }
+
+    public function getWalletCurrencyChoices()
+    {
+        $walletCurrencies = array_flip($this->container->getParameter('app_currency.wallet_currencies'));
+
+        return array_flip(array_intersect_key(Intl::getCurrencyBundle()->getCurrencyNames(), $walletCurrencies));
+    }
+
+
 }

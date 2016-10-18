@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "482479a323c4eb2bebd9125674d97901",
-    "content-hash": "3369e079486d3c04517f98d1fbb0f49f",
+    "hash": "9791148889771ca945a21605277c2456",
+    "content-hash": "89f0ee0cd024d2754812d05bdefa0138",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -1668,6 +1668,114 @@
                 "psr-3"
             ],
             "time": "2012-12-21 11:40:51"
+        },
+        {
+            "name": "redcode/currency-rate",
+            "version": "0.2.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/redco/redcode-currency-rate.git",
+                "reference": "b0e7faf5ec93f11f57d8ee03c083285c56db58f5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/redco/redcode-currency-rate/zipball/b0e7faf5ec93f11f57d8ee03c083285c56db58f5",
+                "reference": "b0e7faf5ec93f11f57d8ee03c083285c56db58f5",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "fabpot/php-cs-fixer": "~1.5",
+                "phpunit/phpunit": "~4.5",
+                "satooshi/php-coveralls": "~0.6"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "RedCode\\Currency": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Andrew Reddikh",
+                    "email": "andrew@reddikh.com",
+                    "homepage": "http://reddikh.com"
+                }
+            ],
+            "description": "Useful library for fetching currency rates from cbr and ecb providers",
+            "homepage": "https://github.com/maZahaca/redcode-currency-rate",
+            "keywords": [
+                "Rate",
+                "cbr.ru",
+                "converter",
+                "currency",
+                "loader",
+                "www.ecb.europa.eu"
+            ],
+            "time": "2015-09-29 07:11:37"
+        },
+        {
+            "name": "redcode/currency-rate-bundle",
+            "version": "0.2.3",
+            "target-dir": "RedCode/CurrencyRateBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/redco/redcode-currency-rate-bundle.git",
+                "reference": "f70e894e040fbac5f2e7e83c4e77724e1a44f12e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/redco/redcode-currency-rate-bundle/zipball/f70e894e040fbac5f2e7e83c4e77724e1a44f12e",
+                "reference": "f70e894e040fbac5f2e7e83c4e77724e1a44f12e",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/dbal": ">=2.3.2",
+                "doctrine/orm": ">=2.3.2",
+                "php": ">=5.4.0",
+                "redcode/currency-rate": "0.2.*"
+            },
+            "require-dev": {
+                "fabpot/php-cs-fixer": "^1.10",
+                "phpunit/phpunit": "^4.8",
+                "satooshi/php-coveralls": "^0.6.1"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-0": {
+                    "RedCode\\CurrencyRateBundle": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Andrew Reddikh",
+                    "email": "andrew@reddikh.com",
+                    "homepage": "http://reddikh.com"
+                }
+            ],
+            "description": "Symfony2 currency rate bundle, allows convert currencies and load rates via cbr or ecb provider",
+            "homepage": "https://github.com/maZahaca/redcode-currency-rate-bundle",
+            "keywords": [
+                "Rate",
+                "bundle",
+                "cbr.ru",
+                "converter",
+                "currency",
+                "loader",
+                "symfony",
+                "www.ecb.europa.eu"
+            ],
+            "time": "2015-10-01 07:22:57"
         },
         {
             "name": "sensio/distribution-bundle",

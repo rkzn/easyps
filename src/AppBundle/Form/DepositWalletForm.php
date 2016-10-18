@@ -53,6 +53,7 @@ class DepositWalletForm extends AbstractType implements ContainerAwareInterface
                     ],
                     'constraints' => [new NotBlank()],
                     'empty_value' => '---',
+                    'choices' => $this->container->get('app_currency')->getWalletCurrencyChoices()
                 ]
             )
         ;

@@ -1,0 +1,12 @@
+AppBundle\Entity\CurrencyRate:
+    type:  entity
+    table: currency_rate
+    id:
+        id:
+            type: integer
+            generator:
+                strategy: AUTO
+
+    oneToOne:
+        currency:
+            targetEntity: AppBundle\Entity\Currency
