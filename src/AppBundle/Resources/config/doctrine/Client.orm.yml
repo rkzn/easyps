@@ -1,6 +1,7 @@
 AppBundle\Entity\Client:
     type:  entity
     table: clients
+    repositoryClass: AppBundle\Entity\ClientRepository
     id:
         id:
             type: integer
