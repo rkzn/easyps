@@ -32,6 +32,8 @@ AppBundle\Entity\TransferHistory:
             joinColumn:
                 name: transferId
                 referencedColumnName: id
+                onDelete: CASCADE
+                onUpdate: CASCADE
 
     lifecycleCallbacks:
         prePersist:   [ prePersist ]

@@ -33,6 +33,7 @@ AppBundle\Entity\WalletHistory:
             joinColumn:
                 name: walletId
                 referencedColumnName: id
-
+                onDelete: CASCADE
+                onUpdate: CASCADE
     lifecycleCallbacks:
         prePersist:   [ prePersist ]

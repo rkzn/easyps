@@ -2,48 +2,52 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
-use AppBundle\Entity\Client;
-use AppBundle\Entity\Wallet;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Faker\Factory;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
 class LoadClientData extends AbstractFixture implements OrderedFixtureInterface
 {
+    use ContainerAwareTrait;
+
+    protected $clientsData = [
+        [
+            'username' => 'test01',
+            'country' => 'RU',
+            'city' => 'Moscow',
+            'currency' => 'RUB',
+        ],
+        [
+            'username' => 'test02',
+            'country' => 'US',
+            'city' => 'NewYork',
+            'currency' => 'USD',
+        ],
+        [
+            'username' => 'test03',
+            'country' => 'DE',
+            'city' => 'Berlin',
+            'currency' => 'EUR',
+        ]
+    ];
+
     /**
      * {@inheritDoc}
      */
     public function load(ObjectManager $manager)
     {
-        $faker = Factory::create('en_US');
+        $clientManager = $this->container->get('app_client');
 
-        for ($b = 0; $b < 3; $b++) {
-            $client = new Client();
-            $client
-                ->setUsername(strtolower($faker->userName))
-                ->setEmail(strtolower($faker->email))
+        foreach($this->clientsData as $data) {
 
-                ->setCity($faker->city)
-                ->setCountry($faker->countryCode)
-
-                ->addRole('ROLE_USER')
-                ->setPlainPassword('123456')
-                ->setEnabled(true)
-            ;
-            $manager->persist($client);
-            $manager->flush();
-
-            $wallet = new Wallet();
-            $wallet
-                ->setClient($client)
-                ->setCurrency($faker->currencyCode)
-                ->setRest(0);
-
-            $manager->persist($wallet);
-            $manager->flush();
-            $client->setWallet($wallet);
-
+            $clientManager->createClient(
+                $data['username'],
+                $data['country'],
+                $data['city'],
+                $data['currency']
+            );
         }
     }
 

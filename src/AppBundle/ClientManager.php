@@ -3,6 +3,7 @@ namespace AppBundle;
 
 use AppBundle\Entity\Client;
 use AppBundle\Entity\Wallet;
+use Doctrine\DBAL\Exception\DatabaseObjectExistsException;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Faker\Factory;
@@ -38,36 +39,44 @@ class ClientManager implements ContainerAwareInterface
         $em->getConnection()->beginTransaction();
 
         try {
-            /** @var Client $client */
-            $client = $userManager->createUser();
-            $client
-                ->setUsername($username)
-                ->setEmail(strtolower($faker->email))
-                ->setCity($city)
-                ->setCountry($country)
-                ->addRole('ROLE_USER')
-                ->setPlainPassword('123456')
-                ->setEnabled(true);
+            $client = $this->getClientByName($username);
 
-            $errors = $this->container->get('validator')->validate($client, array('Registration'));
+            if (!$client) {
+                /** @var Client $client */
+                $client = $userManager->createUser();
 
-            if (count($errors) > 0) {
-                throw new ValidatorException((string) $errors);
+                $client
+                    ->setUsername($username)
+                    ->setEmail(strtolower($faker->email))
+                    ->setCity($city)
+                    ->setCountry($country)
+                    ->addRole('ROLE_USER')
+                    ->setPlainPassword('123456')
+                    ->setEnabled(true);
+
+                $errors = $this->container->get('validator')->validate($client, array('Registration'));
+
+                if (count($errors) > 0) {
+                    throw new ValidatorException((string)$errors);
+                }
+
+                $userManager->updateUser($client);
+
+
+                $wallet = $walletManager->createWallet($client, $currency);
+
+                $errors = $this->container->get('validator')->validate($wallet);
+
+
+                if (count($errors) > 0) {
+                    throw new ValidatorException((string)$errors);
+                }
+
+                $walletManager->updateWallet($wallet);
+
+                $client->setWallet($wallet);
             }
-
-            $userManager->updateUser($client);
-
-            $wallet = $walletManager->createWallet($client, $currency);
-
-            $errors = $this->container->get('validator')->validate($wallet);
-
-            if (count($errors) > 0) {
-                throw new ValidatorException((string) $errors);
-            }
-
-            $walletManager->updateWallet($wallet);
-            $client->setWallet($wallet);
-
+            $em->getConnection()->commit();
             return $client;
         } catch(\Exception $e) {
             $em->getConnection()->rollBack();

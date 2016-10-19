@@ -6,7 +6,12 @@ AppBundle\Entity\CurrencyRate:
             type: integer
             generator:
                 strategy: AUTO
+    uniqueConstraints:
+        uniq_idx:
+          columns: [ currency_id, createdAt, provider_name ]
 
-    oneToOne:
+    manyToOne:
         currency:
             targetEntity: AppBundle\Entity\Currency
+            onDelete: CASCADE
+            onUpdate: CASCADE

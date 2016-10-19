@@ -55,4 +55,13 @@ class CurrencyManager implements ContainerAwareInterface
     {
         return $this->container->get('redcode.currency.rate.converter')->convert($from, $to, $value);
     }
+
+    /**
+     * @param $code
+     * @return null|object|\RedCode\Currency\ICurrency
+     */
+    public function getCurrency($code)
+    {
+        return $this->container->get('redcode.currency.manager')->getCurrency($code);
+    }
 }

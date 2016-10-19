@@ -22,6 +22,8 @@ AppBundle\Entity\Wallet:
             joinColumn:
                 name: clientId
                 referencedColumnName: id
+                onDelete: CASCADE
+                onUpdate: CASCADE
     oneToMany:
         history:
             targetEntity: AppBundle\Entity\WalletHistory

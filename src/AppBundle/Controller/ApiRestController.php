@@ -53,6 +53,8 @@ class ApiRestController extends FOSRestController
      */
     public function postRateAction(Request $request, ParamFetcher $paramFetcher)
     {
+        $view = View::create();
+        $view->setStatusCode(200)->setData(['params' => $paramFetcher->getParams()]);
         try {
             $command = new LoadCurrencyRatesCommand();
             $command->setContainer($this->container);
@@ -61,8 +63,10 @@ class ApiRestController extends FOSRestController
                 'date' => $paramFetcher->get('date')
             ]), new NullOutput());
         } catch (\Exception $e) {
-            throw $this->createNotFoundException($e->getMessage());
+            $view->setStatusCode(404)->setData(['error' => $e->getMessage()]);
         }
+
+        return $view;
     }
 
     /**
@@ -134,7 +138,8 @@ class ApiRestController extends FOSRestController
     {
         $clientManager = $this->container->get('app_client');
         $walletManager = $this->container->get('app_wallet');
-
+        $view = View::create();
+        $view->setStatusCode(200)->setData(['params' => $paramFetcher->getParams()]);
         try {
             /** @var Client $client */
             if (!$client = $clientManager->getClientByName($paramFetcher->get('clientName'))) {
@@ -148,8 +153,10 @@ class ApiRestController extends FOSRestController
             $walletManager->changeRest($client->getWallet(), $amount);
 
         } catch (\Exception $e) {
-            throw $this->createNotFoundException($e->getMessage());
+            $view->setStatusCode(404)->setData(['error' => $e->getMessage()]);
         }
+
+        return $view;
     }
 
     /**
@@ -166,7 +173,7 @@ class ApiRestController extends FOSRestController
      * @param ParamFetcher $paramFetcher Paramfetcher
      *
      * @RequestParam(name="username", nullable=false, strict=true, description="Username.")
-     * @RequestParam(name="counrty", nullable=false, strict=true, description="Country.")
+     * @RequestParam(name="country", nullable=false, strict=true, description="Country.")
      * @RequestParam(name="city", nullable=false, strict=true, description="City.")
      * @RequestParam(name="currency", nullable=false, strict=true, description="Currency.")
      *

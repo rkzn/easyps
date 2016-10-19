@@ -37,4 +37,10 @@ class Currency extends \RedCode\CurrencyRateBundle\Entity\Currency
     {
         return $this->code;
     }
+
+    public function setCode($code)
+    {
+        $this->code = $code;
+        return $this;
+    }
 }
