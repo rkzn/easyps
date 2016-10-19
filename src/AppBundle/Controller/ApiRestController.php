@@ -93,6 +93,8 @@ class ApiRestController extends FOSRestController
     {
         $clientManager = $this->container->get('app_client');
         $walletManager = $this->container->get('app_wallet');
+        $view = View::create();
+        $view->setStatusCode(200)->setData(['params' => $paramFetcher->getParams()]);
 
         try {
             /** @var Client $source */
@@ -112,8 +114,10 @@ class ApiRestController extends FOSRestController
 
             $walletManager->transferMoney($source->getWallet(), $destination->getWallet(), $amount);
         } catch (\Exception $e) {
-            throw $this->createNotFoundException($e->getMessage());
+            $view->setStatusCode(404)->setData(['error' => $e->getMessage()]);
         }
+
+        return $view;
     }
 
     /**

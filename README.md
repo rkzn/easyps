@@ -15,6 +15,19 @@ Instructions to run the tests:
 
 * run `php app/runtest -c app/phpunit.xml`
 
+Setup Supervisor:
+
+* A configuration for our script, saved at /etc/supervisor/conf.d/easyps.conf
+* Don't foget replace {path_to_website} in the config
+```
+[program:transfer-daemon]
+ command={path_to_website}/app/console app:easyps:transfer-daemon
+ priority=2
+ redirect_stderr=true
+ user=www-data
+ environment=HOME="{path_to_website}",USER="www-data"
+```
+
 Demo:
 
 * http://easyps.diamond.kazansky.su

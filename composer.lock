@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "af30f7c4d8aea9341c662aa24e45987f",
-    "content-hash": "fc6cecbf16cf91d6dbcde0827ddc9404",
+    "hash": "72c1563a1a77a8c0465ff0ad5f05e2ee",
+    "content-hash": "20eae93eba5c88ca753dbb62f7ae0397",
     "packages": [
         {
             "name": "apy/datagrid-bundle",
@@ -3468,6 +3468,52 @@
                 "negotiation"
             ],
             "time": "2016-10-14 09:17:47"
+        },
+        {
+            "name": "wrep/daemonizable-command",
+            "version": "1.3.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mac-cain13/daemonizable-command.git",
+                "reference": "c053c96e014477d04d144139f2a40fdae4831a50"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mac-cain13/daemonizable-command/zipball/c053c96e014477d04d144139f2a40fdae4831a50",
+                "reference": "c053c96e014477d04d144139f2a40fdae4831a50",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3",
+                "symfony/console": "2.*",
+                "symfony/dependency-injection": "2.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Wrep\\Daemonizable\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mathijs Kadijk",
+                    "email": "mathijs@wrep.nl"
+                }
+            ],
+            "description": "Daemonizable (endless running) commands for Symfony2.",
+            "homepage": "https://github.com/mac-cain13/daemonizable-command",
+            "keywords": [
+                "Symfony2",
+                "background process",
+                "backgrounding",
+                "daemon",
+                "long running process"
+            ],
+            "time": "2015-11-26 12:59:24"
         }
     ],
     "packages-dev": [

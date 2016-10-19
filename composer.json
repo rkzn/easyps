@@ -34,7 +34,8 @@
         "nelmio/api-doc-bundle": "^2.13",
         "friendsofsymfony/jsrouting-bundle": "^1.6",
         "apy/datagrid-bundle": "^2.2",
-        "datatheke/pager-bundle": "^0.5.2"
+        "datatheke/pager-bundle": "^0.5.2",
+        "wrep/daemonizable-command": "~1.2"
     },
     "require-dev": {
         "phpunit/phpunit": "4.*",
