@@ -2,8 +2,12 @@
 
 namespace AppBundle\Entity;
 
+use APY\DataGridBundle\Grid\Mapping as GRID;
+
 /**
  * Transfer
+ *
+ * @GRID\Source(columns="id, sourceWallet.client.username, sourceWallet.currency, destinationWallet.client.username, destinationWallet.currency, amount, currency, createdAt, state ")
  */
 class Transfer
 {
@@ -50,11 +54,17 @@ class Transfer
 
     /**
      * @var \AppBundle\Entity\Wallet
+     *
+     * @GRID\Column(field="sourceWallet.currency", title="From Currency")
+     * @GRID\Column(field="sourceWallet.client.username", title="From")
      */
     private $sourceWallet;
 
     /**
      * @var \AppBundle\Entity\Wallet
+     *
+     * @GRID\Column(field="destinationWallet.currency", title="To Currency")
+     * @GRID\Column(field="destinationWallet.client.username", title="To")
      */
     private $destinationWallet;
 

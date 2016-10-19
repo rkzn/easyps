@@ -2,10 +2,10 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Common\Amount;
+use APY\DataGridBundle\Grid\Export\CSVExport;
+use APY\DataGridBundle\Grid\Source\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\VarDumper\VarDumper;
 
 class DefaultController extends Controller
 {
@@ -30,32 +30,48 @@ class DefaultController extends Controller
 
     /**
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return array|\Symfony\Component\HttpFoundation\Response
      */
-    public function testAction(Request $request)
+    public function reportAction(Request $request)
     {
-        $clientManager = $this->container->get('app_client');
-        $currencyManager = $this->container->get('app_currency');
-        $walletManager = $this->container->get('app_wallet');
+        // Creates simple grid based on your entity (ORM)
+        $source = new Entity('AppBundle:WalletHistory');
 
-        $source = $clientManager->getClientByName('mrau');
-        $dest = $clientManager->getClientByName('hcole');
+        // Get a grid instance
+        $grid = $this->get('grid');
 
-        $amount = new Amount(10, 'USD');
+        // Attach the source to the grid
+        $grid->setSource($source);
+        $grid->addExport(new CSVExport('CSV Export', 'export'));
 
-        $walletManager->changeRest($source->getWallet(), $amount);
-        $walletManager->changeRest($dest->getWallet(), $amount);
+        // Configuration of the grid
+        $grid->setLimits(array(5, 10, 15));
+        $grid->setDefaultPage(1);
+        $grid->setRouteUrl($this->generateUrl('app_report_page'));
 
-        VarDumper::dump($source->getWallet());
-        VarDumper::dump($dest->getWallet());
-        die();
+        $grid->hideFilters();
+
+        // Manage the grid redirection, exports and the response of the controller
+        return $grid->getGridResponse('AppBundle::report.html.twig');
     }
 
     /**
      * @param Request $request
+     * @return array|\Symfony\Component\HttpFoundation\Response
      */
-    public function reportAction(Request $request)
+    public function transfersAction(Request $request)
     {
-        return $this->render('AppBundle::report.html.twig');
+        $source = new Entity('AppBundle:Transfer');
+
+        $grid = $this->get('grid');
+        $grid->setSource($source);
+        $grid->addExport(new CSVExport('CSV Export', 'export'));
+        $grid->setLimits(array(5, 10, 15));
+        $grid->setDefaultPage(1);
+        $grid->setRouteUrl($this->generateUrl('app_transfers_page'));
+
+        $grid->hideFilters();
+
+        return $grid->getGridResponse('AppBundle::transfers.html.twig');
     }
 }

@@ -10,9 +10,9 @@ app_report_page:
     options:
         expose: true
 
-app_test_page:
-    path: /test
-    defaults: { _controller: 'AppBundle:Default:test' }
+app_transfers_page:
+    path: /transfers
+    defaults: { _controller: 'AppBundle:Default:transfers' }
     options:
         expose: true
 rest :
