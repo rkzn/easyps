@@ -2,12 +2,18 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Common\Amount;
+use AppBundle\Entity\Client;
+use AppBundle\Exception\ClientNotFoundException;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations\RequestParam;
 use FOS\RestBundle\View\View;
 use FOS\RestBundle\Request\ParamFetcher;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use Symfony\Component\VarDumper\VarDumper;
+use RedCode\CurrencyRateBundle\Command\LoadCurrencyRatesCommand;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\NullOutput;
+use Symfony\Component\HttpFoundation\Request;
 
 class ApiRestController extends FOSRestController
 {
@@ -27,36 +33,46 @@ class ApiRestController extends FOSRestController
     }
 
     /**
-     * Add Rate from the submitted data.
+     * Load Currency Rates.
      *
      * @ApiDoc(
      *   resource = true,
      *   statusCodes = {
-     *     200 = "Returned when successful"
+     *     200 = "Returned when successful",
+     *     404 = "Returned when error"
      *   }
      * )
      *
      *
      * @param ParamFetcher $paramFetcher Paramfetcher
      *
-     * @RequestParam(name="provider", nullable=false, strict=true, description="Provider.")
-     * @RequestParam(name="date", nullable=false, strict=true, description="Date.")
+     * @RequestParam(name="provider", nullable=false, strict=true, description="Provider. (cbr|ecb)")
+     * @RequestParam(name="date", nullable=false, strict=true, description="Date. (Y-m-d)")
      *
      * @return View
      */
-    public function postRateAction(ParamFetcher $paramFetcher)
+    public function postRateAction(Request $request, ParamFetcher $paramFetcher)
     {
-        VarDumper::dump($paramFetcher->all());
-        die();
+        try {
+            $command = new LoadCurrencyRatesCommand();
+            $command->setContainer($this->container);
+            $command->run(new ArrayInput([
+                'providerName' => $paramFetcher->get('provider'),
+                'date' => $paramFetcher->get('date')
+            ]), new NullOutput());
+        } catch (\Exception $e) {
+            throw $this->createNotFoundException($e->getMessage());
+        }
     }
 
     /**
-     * Transfer money from the submitted data.
+     * Transfer money.
      *
      * @ApiDoc(
      *   resource = true,
      *   statusCodes = {
-     *     200 = "Returned when successful"
+     *     200 = "Returned when successful",
+     *     404 = "Returned when error"
      *   }
      * )
      *
@@ -64,77 +80,118 @@ class ApiRestController extends FOSRestController
      *
      * @RequestParam(name="currency", nullable=false, strict=true, description="Currency.")
      * @RequestParam(name="amount", nullable=false, strict=true, description="Amount.")
-     * @RequestParam(name="receiver", nullable=false, strict=true, description="Receiver.")
+     * @RequestParam(name="source", nullable=false, strict=true, description="Source Client Name")
+     * @RequestParam(name="destination", nullable=false, strict=true, description="Destination Client Name")
      *
      * @return View
      */
-    public function postTransferAction(ParamFetcher $paramFetcher)
+    public function postTransferAction(Request $request, ParamFetcher $paramFetcher)
     {
-        VarDumper::dump($paramFetcher->all());
-        die();
+        $clientManager = $this->container->get('app_client');
+        $walletManager = $this->container->get('app_wallet');
+
+        try {
+            /** @var Client $source */
+            $source = $clientManager->getClientByName($paramFetcher->get('source'));
+            if (!$source) {
+                throw new ClientNotFoundException($paramFetcher->get('source'));
+            }
+
+            /** @var Client $destination */
+            $destination = $clientManager->getClientByName($paramFetcher->get('destination'));
+            if (!$destination) {
+                throw new ClientNotFoundException($paramFetcher->get('destination'));
+            }
+
+            /** @var Amount $amount */
+            $amount = new Amount($paramFetcher->get('amount'), $paramFetcher->get('currency'));
+
+            $walletManager->transferMoney($source->getWallet(), $destination->getWallet(), $amount);
+        } catch (\Exception $e) {
+            throw $this->createNotFoundException($e->getMessage());
+        }
     }
 
     /**
      * Deposit wallet from the submitted data.
+     *
      * @ApiDoc(
      *   resource = true,
      *   statusCodes = {
-     *     200 = "Returned when successful"
+     *     200 = "Returned when successful",
+     *     404 = "Returned when error"
      *   }
      * )
      * @param ParamFetcher $paramFetcher Paramfetcher
      *
      * @RequestParam(name="currency", nullable=false, strict=true, description="Currency.")
      * @RequestParam(name="amount", nullable=false, strict=true, description="Amount.")
-     * @RequestParam(name="receiver", nullable=false, strict=true, description="Receiver.")
+     * @RequestParam(name="clientName", nullable=false, strict=true, description="Client Name.")
      *
      * @return View
      */
-    public function postDepositWalletAction(ParamFetcher $paramFetcher)
+    public function postDepositWalletAction(Request $request, ParamFetcher $paramFetcher)
     {
-        VarDumper::dump($paramFetcher->all());
-        die();
+        $clientManager = $this->container->get('app_client');
+        $walletManager = $this->container->get('app_wallet');
+
+        try {
+            /** @var Client $client */
+            if (!$client = $clientManager->getClientByName($paramFetcher->get('clientName'))) {
+                throw new ClientNotFoundException($paramFetcher->get('clientName'));
+            }
+
+            /** @var Amount $amount */
+            $amount = new Amount($paramFetcher->get('amount'), $paramFetcher->get('currency'));
+
+            // Отправляем деньги
+            $walletManager->changeRest($client->getWallet(), $amount);
+
+        } catch (\Exception $e) {
+            throw $this->createNotFoundException($e->getMessage());
+        }
     }
 
     /**
-     * Create a User from the submitted data.<br/>
+     * Create a Client from the submitted data.
+     *
      * @ApiDoc(
      *   resource = true,
      *   statusCodes = {
-     *     200 = "Returned when successful"
+     *     200 = "Returned when successful",
+     *     404 = "Returned when error"
      *   }
      * )
      *
      * @param ParamFetcher $paramFetcher Paramfetcher
      *
-     * @RequestParam(name="username", nullable=false, strict=false, description="Username.")
-     * @RequestParam(name="counrty", nullable=false, strict=false, description="Country.")
-     * @RequestParam(name="city", nullable=false, strict=false, description="City.")
-     * @RequestParam(name="currency", nullable=false, strict=false, description="Currency.")
+     * @RequestParam(name="username", nullable=false, strict=true, description="Username.")
+     * @RequestParam(name="counrty", nullable=false, strict=true, description="Country.")
+     * @RequestParam(name="city", nullable=false, strict=true, description="City.")
+     * @RequestParam(name="currency", nullable=false, strict=true, description="Currency.")
      *
      * @return View
      */
-    public function postUserAction(ParamFetcher $paramFetcher)
+    public function postClientAction(Request $request, ParamFetcher $paramFetcher)
     {
-        VarDumper::dump($paramFetcher->all());
-        die();
-
-        $userManager = $this->container->get('fos_user.user_manager');
-        $user = $userManager->createUser();
-        $user->setUsername($paramFetcher->get('username'));
-        $user->setCountry($paramFetcher->get('country'));
-        $user->setCity($paramFetcher->get('city'));
-        $user->setEnabled(true);
-        $user->addRole('ROLE_API');
+        $clientManager = $this->container->get('app_client');
         $view = View::create();
-        $errors = $this->get('validator')->validate($user, array('Registration'));
-        if (count($errors) == 0) {
-            $userManager->updateUser($user);
-            $view->setData($user)->setStatusCode(200);
-            return $view;
-        } else {
-            $view = $this->getErrorsView($errors);
-            return $view;
+
+        try {
+            /** @var Client $client */
+            $client = $clientManager->createClient(
+                $paramFetcher->get('username'),
+                $paramFetcher->get('country'),
+                $paramFetcher->get('city'),
+                $paramFetcher->get('currency')
+            );
+
+            $view->setData($client)->setStatusCode(200);
+
+        } catch (\Exception $e) {
+            $view->setData(['error' => $e->getMessage()])->setStatusCode(404);
         }
+
+        return $view;
     }
 }

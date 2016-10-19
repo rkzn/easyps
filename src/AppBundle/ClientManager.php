@@ -6,6 +6,7 @@ use AppBundle\Entity\Wallet;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Faker\Factory;
+use Symfony\Component\Validator\Exception\ValidatorException;
 
 class ClientManager implements ContainerAwareInterface
 {
@@ -13,20 +14,32 @@ class ClientManager implements ContainerAwareInterface
 
     public function getClientByName($name)
     {
-        $repo = $this->container->get('doctrine.orm.entity_manager')->getRepository('AppBundle:Client');
-
-        return $repo->findByUsername($name);
+        return $this->container->get('fos_user.user_manager')->findUserByUsername($name);
     }
 
+    /**
+     * Создание клиента и его кошелька
+     *
+     * @param $username
+     * @param $country
+     * @param $city
+     * @param $currency
+     * @return Client
+     * @throws \Doctrine\DBAL\ConnectionException
+     * @throws \Exception
+     */
     public function createClient($username, $country, $city, $currency)
     {
         $faker = Factory::create('en_US');
+        $userManager = $this->container->get('fos_user.user_manager');
+        $walletManager = $this->container->get('app_wallet');
 
         $em = $this->container->get('doctrine.orm.entity_manager');
         $em->getConnection()->beginTransaction();
 
         try {
-            $client = new Client();
+            /** @var Client $client */
+            $client = $userManager->createUser();
             $client
                 ->setUsername($username)
                 ->setEmail(strtolower($faker->email))
@@ -35,18 +48,24 @@ class ClientManager implements ContainerAwareInterface
                 ->addRole('ROLE_USER')
                 ->setPlainPassword('123456')
                 ->setEnabled(true);
-            $em->persist($client);
-            $em->flush();
 
-            $wallet = new Wallet();
-            $wallet
-                ->setClient($client)
-                ->setCurrency($currency)
-                ->setRest(0);
+            $errors = $this->container->get('validator')->validate($client, array('Registration'));
 
-            $em->persist($wallet);
-            $em->flush();
-            $em->getConnection()->commit();
+            if (count($errors) > 0) {
+                throw new ValidatorException((string) $errors);
+            }
+
+            $userManager->updateUser($client);
+
+            $wallet = $walletManager->createWallet($client, $currency);
+
+            $errors = $this->container->get('validator')->validate($wallet);
+
+            if (count($errors) > 0) {
+                throw new ValidatorException((string) $errors);
+            }
+
+            $walletManager->updateWallet($wallet);
             $client->setWallet($wallet);
 
             return $client;

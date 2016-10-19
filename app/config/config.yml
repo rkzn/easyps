@@ -77,3 +77,12 @@ redcode_currency_rate:
     currency_class: AppBundle\Entity\Currency
 
 nelmio_api_doc: ~
+
+datatheke_pager:
+    item_count_per_page:  10
+    item_count_per_page_choices:
+        - 10
+        - 50
+        - 100
+    page_range:           5
+    datagrid_theme:       DatathekePagerBundle:DataGrid:bootstrap3.html.twig

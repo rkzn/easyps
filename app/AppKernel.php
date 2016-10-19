@@ -24,6 +24,7 @@ class AppKernel extends Kernel
             new \RedCode\CurrencyRateBundle\RedCodeCurrencyRateBundle(),
             new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
             new APY\DataGridBundle\APYDataGridBundle(),
+            new Datatheke\Bundle\PagerBundle\DatathekePagerBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'), true)) {

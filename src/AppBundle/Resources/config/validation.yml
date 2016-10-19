@@ -1,0 +1,8 @@
+AppBundle\Entity\Wallet:
+  properties:
+      currency:
+          - NotBlank: ~
+          - Currency: ~
+      rest:
+          - NotBlank: ~
+          - Type: numeric

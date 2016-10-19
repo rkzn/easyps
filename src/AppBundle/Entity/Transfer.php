@@ -7,6 +7,12 @@ namespace AppBundle\Entity;
  */
 class Transfer
 {
+    const STATE_PENDING = 'pending'; // Ожидание выполнения перевода
+    const STATE_PROCESS = 'process'; // Перевод взят в обработку
+    const STATE_ACCEPT = 'accept'; // Деньги списаны с отправителя
+    const STATE_COMPLETE = 'complete'; // Деньги зачислены получателю
+    const STATE_ERROR = 'error'; // Ошибка в процессе обработки
+
     /**
      * @var integer
      */

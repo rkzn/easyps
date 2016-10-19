@@ -10,6 +10,8 @@ class CurrencyManager implements ContainerAwareInterface
     use ContainerAwareTrait;
 
     /**
+     * Список всех валют
+     *
      * @return array
      */
     public function getAllCurrencyChoices()
@@ -18,6 +20,8 @@ class CurrencyManager implements ContainerAwareInterface
     }
 
     /**
+     * Список валют для кошельков
+     *
      * @return array
      */
     public function getWalletCurrencyChoices()
@@ -28,6 +32,8 @@ class CurrencyManager implements ContainerAwareInterface
     }
 
     /**
+     * Список провайдеров котировок валют
+     *
      * @return array
      */
     public function getRateProviderChoices()
@@ -36,6 +42,8 @@ class CurrencyManager implements ContainerAwareInterface
     }
 
     /**
+     * Адаптер конвертера валют
+     *
      * @param $from
      * @param $to
      * @param $value
