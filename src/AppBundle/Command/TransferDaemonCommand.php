@@ -5,11 +5,11 @@ use AppBundle\Entity\Transfer;
 use Monolog\Handler\StreamHandler;
 use Monolog\Processor\MemoryPeakUsageProcessor;
 use Symfony\Bridge\Monolog\Logger;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Wrep\Daemonizable\Command\EndlessContainerAwareCommand;
 
-class TransferDaemonCommand extends ContainerAwareCommand
+class TransferDaemonCommand extends EndlessContainerAwareCommand
 {
     /**
      * @var Logger

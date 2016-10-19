@@ -109,10 +109,15 @@ class ApiRestController extends FOSRestController
                 throw new ClientNotFoundException($paramFetcher->get('destination'));
             }
 
-            /** @var Amount $amount */
-            $amount = new Amount($paramFetcher->get('amount'), $paramFetcher->get('currency'));
+            $transfer = $walletManager->createTransfer(
+                $source->getWallet(),
+                $destination->getWallet(),
+                $paramFetcher->get('amount'),
+                $paramFetcher->get('currency')
+            );
 
-            $walletManager->transferMoney($source->getWallet(), $destination->getWallet(), $amount);
+            $walletManager->updateTransfer($transfer);
+
         } catch (\Exception $e) {
             $view->setStatusCode(404)->setData(['error' => $e->getMessage()]);
         }

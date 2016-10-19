@@ -54,6 +54,30 @@ class WalletManager implements ContainerAwareInterface
         }
     }
 
+    public function createTransfer(Wallet $src, Wallet $dst, $amount, $currency)
+    {
+        $transfer = new Transfer();
+        $transfer->setAmount($amount);
+        $transfer->setCurrency($currency);
+        $transfer->setState(Transfer::STATE_PENDING);
+        $transfer->setSourceWallet($src);
+        $transfer->setDestinationWallet($dst);
+
+        return $transfer;
+    }
+
+    /**
+     * @param Transfer $transfer
+     * @param bool $andFlush
+     */
+    public function updateTransfer(Transfer $transfer, $andFlush = true)
+    {
+        $this->entityManager->persist($transfer);
+        if ($andFlush) {
+            $this->entityManager->flush();
+        }
+    }
+
     /**
      * Обработка перевода
      *
