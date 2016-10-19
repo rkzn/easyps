@@ -13,7 +13,7 @@ Instructions to run the app:
 
 Instructions to run the tests:
 
-* run `php app/console runtest -c app/phpunit.xml`
+* run `php app/runtest -c app/phpunit.xml`
 
 Demo:
 

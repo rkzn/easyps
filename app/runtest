@@ -1,4 +1,7 @@
 #!/usr/bin/env php
 <?php
+use Symfony\Component\Debug\Debug;
+
 require_once 'bootstrap.test.php';
+Debug::enable(E_RECOVERABLE_ERROR & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED, false);
 PHPUnit_TextUI_Command::main($argv);

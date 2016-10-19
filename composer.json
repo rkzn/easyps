@@ -40,8 +40,6 @@
         "phpunit/phpunit": "4.*",
         "phpunit/dbunit": "^1.3.0",
         "johnkary/phpunit-speedtrap": "^1.0",
-
-        "phpro/grumphp": "~0.1",
         "squizlabs/php_codesniffer": "~2.3",
         "phpspec/phpspec": "~2.1",
         "leaphub/phpcs-symfony2-standard": "^2.0",
